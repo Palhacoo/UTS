@@ -2,7 +2,7 @@
 session_start();
 require 'config.php';
 
-$error_message = ""; // Variabel untuk menyimpan error pesan
+$error_message = ""; // Variabel untuk menyimpan error message
 
 if (isset($_GET['error'])) {
     $error_message = $_GET['error']; // Ambil pesan error dari URL
