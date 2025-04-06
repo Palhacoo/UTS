@@ -131,7 +131,29 @@ if (isset($_GET['update_id'])) {
             <?php endif; ?>
         </div>
 
- 
+        <!-- Form Tambah -->
+        <div id="tambahForm" style="display: none;">
+            <h3>Tambah Dosen</h3>
+            <form action="tambah_dosen.php" method="post">
+                <div class="row g-3">
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" name="nik" placeholder="NIK" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="nama" placeholder="Nama" required>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" name="gelar" placeholder="Gelar" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="lulusan" placeholder="Lulusan" required>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" name="no_telp" placeholder="No Telp" required>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-warning">Tambah</button>
+                    </div>
                 </div>
             </form>
         </div>
