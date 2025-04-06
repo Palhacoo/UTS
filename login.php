@@ -2,11 +2,17 @@
 session_start();
 require 'config.php';
 
+$error_message = ""; // Variabel untuk menyimpan error pesan
+
+if (isset($_GET['error'])) {
+    $error_message = $_GET['error']; // Ambil pesan error dari URL
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $sql = "SELECT username, password, role FROM users WHERE username = ?"; // ✅ Pastikan role diambil
+    $sql = "SELECT username, password, role FROM users WHERE username = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -17,21 +23,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Cek password (jika sudah di-hash)
         if (password_verify($password, $user['password'])) {
             $_SESSION['username'] = $user['username'];
-            $_SESSION['role'] = $user['role']; 
-
-            // 🔍 
-            echo "<pre>";
-            print_r($_SESSION);
-            echo "</pre>";
-            exit(); // 
-
-            header("Location: jadwal.php");
+            $_SESSION['role'] = $user['role'];
+            header("Location: index.php");
             exit();
         } else {
-            echo "Password salah!";
+            header("Location: login.php?error=Username/Password Salah");
+            exit();
         }
     } else {
-        echo "Username tidak ditemukan!";
+        header("Location: login.php?error=Username/Password Salah");
+        exit();
     }
 }
 ?>
@@ -83,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             padding: 10px;
             margin-bottom: 20px;
             border: none;
-            border-bottom: 2px solid #f1c40f;
+            border-bottom: 2px solid #ffeb3b;
             background-color: transparent;
             font-size: 16px;
             color: #333;
@@ -92,11 +93,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .input-field:focus {
-            border-color: #e67e22;
+            border-color: #ffeb3b;
         }
 
         .forgot-password {
-            color: #f1c40f;
+            color: #ffeb3b;
             font-size: 14px;
             text-align: right;
             margin-bottom: 20px;
@@ -104,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .login-btn {
-            background-color: #f1c40f;
+            background-color: #ffeb3b;
             color: #000;
             font-size: 16px;
             padding: 12px;
@@ -122,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         .right-section {
             width: 50%;
-            background-color: #f1c40f;
+            background-color: #ffeb3b;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -139,9 +140,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="login-container">
-        <h1>JUDUL PROJECT/NAMA WEB</h1>
-        <h2 style="color: #f1c40f;">LOGIN</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <h1>UTS Pemrograman Website</h1>
+        <h2 style="color: #ffeb3b;">LOGIN</h2>
+        <br>
+        <p>Silahkan login terlebih dahulu</p>
+        
+        <!-- Tampilkan pesan error jika ada -->
+        <?php if (!empty($error_message)): ?>
+            <p style="color: red; font-weight: bold; text-align: center;"><?= htmlspecialchars($error_message) ?></p>
+        <?php endif; ?>
+
         <form action="proses_login.php" method="POST">
             <input type="text" name="username" class="input-field" placeholder="Username" required />
             <input type="password" name="password" class="input-field" placeholder="Password" required />
@@ -152,4 +160,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="right-section">
 </body>
 </html>
-
