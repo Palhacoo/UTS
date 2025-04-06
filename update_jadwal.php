@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($jumlah == 0) {
             // Redirect ke jadwal.php dengan pesan error
-            header("Location: jadwal.php?error=NIK dosen tidak ditemukan!");
+            header("Location: jadwal.php?error=NIK dosen tidak sesuai!");
             exit();
         }
     } else {
